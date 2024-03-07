@@ -22,11 +22,11 @@ def generate():
             (success, frame) = vs.read()
 
             # Check for barcodes
-            # barcodes = pyzbar.decode(frame)
-            # for barcode in barcodes:
-            #     barcodeData = barcode.data.decode("utf-8")
-            #     # Append first found barcode to global found
-            #     found.append(barcodeData)
+            barcodes = pyzbar.decode(frame)
+            for barcode in barcodes:
+                barcodeData = barcode.data.decode("utf-8")
+                # Append first found barcode to global found
+                found.append(barcodeData)
             if not success:
                 break
 
