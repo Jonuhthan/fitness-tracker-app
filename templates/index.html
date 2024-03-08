@@ -14,8 +14,6 @@
         <h1>Video Stream</h1>
         <img src="{{ url_for('static', filename='images/placeholder.jpg') }}" alt="Placeholder image." id="placeholder">
         <button onclick="start_video('{{ url_for('video_feed') }}')">Start video stream</button>
-        <button onclick="stop_video('{{ url_for('static', filename='images/placeholder.jpg') }}')">Stop video stream</button>
-
         <script type="text/javascript" src="../static/script.js"></script>
     </body>
 </html>
