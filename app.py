@@ -25,10 +25,21 @@ def generate():
             if not success:
                 print('Failed to read frame.')
                 break
-
+            
+            # Check each successful frame for barcodes
             barcodes = pyzbar.decode(frame)
             for barcode in barcodes:
+                (x, y, w, h) = barcode.rect
+                cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 255), 2)
+                
+                # Grab number and type
                 barcodeData = barcode.data.decode("utf-8")
+                barcodeType = barcode.type
+
+                # Show the barcode info in the video stream
+                text = f"{barcodeData} ({barcodeType})"
+                cv2.putText(frame, text, (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
+
                 # Append first found barcode to global found
                 found.append(barcodeData)
             
