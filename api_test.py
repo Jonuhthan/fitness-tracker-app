@@ -3,10 +3,10 @@ import json
 
 # OpenFoodFacts API
 endpoint = "https://world.openfoodfacts.org/api/v0/product/"
-barcode = '0078742136035'
-url = f"{endpoint}{barcode}.json"
+barcode = '0078742136035'   # Chocolate bar barcode example
+url = f"{endpoint}{barcode}.json"   
 response = requests.get(url)
-data = response.json()
+data = response.json()      # Returns type dict, but contains lots of information
 
 nutrients = data['product']['nutriments'] 
 
@@ -26,3 +26,4 @@ relevant_data = {
 }
 
 print(relevant_data)
+print(type(data))
