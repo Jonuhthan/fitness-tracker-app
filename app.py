@@ -58,6 +58,7 @@ def generate():
                 break
     # Close video stream
     vs.release()
+    vs = None
     cv2.destroyAllWindows()
 
 
@@ -88,10 +89,11 @@ def result():
     while True:
         if found:
             break
-        time.sleep(3.0)
+        time.sleep(2.0)
 
     if found:
         barcode = found[0]  #'0078742136035'   # Chocolate bar barcode example
+        found = []
         product_info = fetch_product_info(barcode)
         return render_template('result.html', product_info=product_info, barcode=barcode, status=status)
     else:
