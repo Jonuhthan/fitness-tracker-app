@@ -4,6 +4,7 @@ from pyzbar import pyzbar
 import cv2
 import threading
 import requests
+import time
 
 app = Flask(__name__)
 vs = None
@@ -83,9 +84,12 @@ def start_feed_route():
 @app.route('/result', methods=['POST'])
 def result():
     global found
-    # Constantly check for barcode
-    while not found:
-        continue
+    # Check for barcode every three seconds
+    while True:
+        if found:
+            break
+        time.sleep(3.0)
+
     if found:
         barcode = found[0]  #'0078742136035'   # Chocolate bar barcode example
         product_info = fetch_product_info(barcode)
@@ -110,23 +114,48 @@ def fetch_product_info(barcode):
         # Key-value pairs of relevant nutritional info (will be edited in the future)
         product_info = {
            'Name': product.get('product_name', 'N/A'),
-           'allergens': product.get('allergens_from_ingredients', 'N/A'),
-           'serving_size': product.get('serving_size', 'N/A'),
-           'ingredients': product.get('ingredients_text', 'N/A'),
-      
-           'fat': nutrients.get('fat', 'N/A'),
-           'fat_unit': nutrients.get('fat_unit', ''),
-           'cholesterol': nutrients.get('cholesterol', 'N/A'),
-           'cholesterol_unit': nutrients.get('cholesterol_unit', ''),
-           'sodium': nutrients.get('sodium', 'N/A'),
-           'sodium_unit': nutrients.get('sodium_unit', ''),
-           'carbohydrates': nutrients.get('carbohydrates', 'N/A'),
-           'carbohydrates_unit': nutrients.get('carbohydrates_unit', ''),
-           'sugars': nutrients.get('sugars', 'N/A'),
-           'sugars_unit': nutrients.get('sugars_unit', ''),
-           'proteins': nutrients.get('proteins', 'N/A'),
-           'proteins_unit': nutrients.get('proteins_unit', '')
-       }
+           'Ingredients': product.get('ingredients_text', 'N/A'),
+           'Calories': (
+                nutrients.get('energy-kcal_serving', 'N/A'),
+                nutrients.get('energy-kcal_unit', 'N/A')
+            ),
+            'Total Fat': (
+                nutrients.get('fat_serving', 'N/A'),
+                nutrients.get('fat_unit', 'N/A')
+            ),
+            'Saturated Fat': (
+                nutrients.get('saturated-fat_serving', 'N/A'),
+                nutrients.get('saturated-fat_unit', 'N/A')
+            ),
+            'Trans-fat': (
+                nutrients.get('trans-fat_serving', 'N/A'),
+                nutrients.get('trans-fat_unit', 'N/A')
+            ),
+            'Cholesterol': (
+                nutrients.get('cholesterol_serving', 'N/A'),
+                nutrients.get('cholesterol_unit', 'N/A')
+            ),
+            'Sodium': (
+                nutrients.get('sodium_serving', 'N/A'),
+                nutrients.get('sodium_unit', 'N/A')
+            ),
+            'Total Carbohydrate': (
+                nutrients.get('carbohydrates_serving', 'N/A'),
+                nutrients.get('carbohydrates_unit', 'N/A')
+            ),
+            'Fiber': (
+                nutrients.get('fiber_serving', 'N/A'),
+                nutrients.get('fiber_unit', 'N/A')
+            ),
+            'Sugar': (
+                nutrients.get('sugars_serving', 'N/A'),
+                nutrients.get('sugars_unit', 'N/A')
+            ),
+            'Protein': (
+                nutrients.get('proteins_serving', 'N/A'),
+                nutrients.get('proteins_unit', 'N/A')
+            )
+        }
         return product_info
     else:
         return "Product not found or does not exist."

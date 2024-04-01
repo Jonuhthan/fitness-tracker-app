@@ -8,8 +8,13 @@
         <h1>Nutritional Data for {{ barcode }}</h1>
         <!-- Iterate over each key-value pair in product_info and list them out -->
         {% if status == 1 %}
-            {% for nutrient, amount in product_info.items() %}
-                <ul>{{ nutrient }}: {{ amount }}</ul>
+            {% for category, value in product_info.items() %}
+                <!-- add if statement to check length of amount as a way to differentiate nutrients with names and stuff -->
+                {% if value|length > 2 %}
+                    <ul>{{ category }}: {{ value }}</ul>   
+                {% else %}
+                    <ul>{{ category }}: {{ value[0] }}{{ value[1] }}</ul>
+                {% endif %}
             {% endfor %}
         {% endif %}
         <script type="text/javascript" src="../static/script.js"></script>
