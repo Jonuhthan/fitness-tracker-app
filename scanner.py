@@ -27,3 +27,5 @@ def get_barcode():
     # Returns barcode number
     vs.stop()
     return found
+
+get_barcode()

@@ -1,5 +1,4 @@
 import requests
-import json
 
 # OpenFoodFacts API
 endpoint = "https://world.openfoodfacts.org/api/v0/product/"
@@ -26,4 +25,3 @@ relevant_data = {
 }
 
 print(relevant_data)
-print(type(data))

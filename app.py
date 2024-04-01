@@ -1,9 +1,10 @@
 from flask import Flask, render_template, Response
 from imutils.video import VideoStream
-import cv2
 from pyzbar import pyzbar
+import cv2
 import threading
 import time
+import requests
 
 app = Flask(__name__)
 vs = None
@@ -79,6 +80,54 @@ def start_feed():
 def start_feed_route():
     start_feed()
     return "Starting video feed"
+
+@app.route('/result', methods=['POST'])
+def result():
+    global found
+    while not found:
+        continue
+    if found:
+        barcode = found[0]  #'0078742136035'   # Chocolate bar barcode example
+        product_info = fetch_product_info(barcode)
+        return render_template('result.html', product_info=product_info, barcode=barcode, status=status)
+    else:
+        return "No barcode scan"
+
+def fetch_product_info(barcode):
+    endpoint = 'https://world.openfoodfacts.org/api/v0/product/'
+    url = f'{endpoint}{barcode}.json'   
+    response = requests.get(url)
+    data = response.json()
+    
+    global status
+    status = data['status']
+
+    if status == 1:
+        product = data['product']
+        nutrients = product.get('nutriments', {})
+
+        product_info = {
+           'Name': product.get('product_name', 'N/A'),
+           'allergens': product.get('allergens_from_ingredients', 'N/A'),
+           'serving_size': product.get('serving_size', 'N/A'),
+           'ingredients': product.get('ingredients_text', 'N/A'),
+      
+           'fat': nutrients.get('fat', 'N/A'),
+           'fat_unit': nutrients.get('fat_unit', ''),
+           'cholesterol': nutrients.get('cholesterol', 'N/A'),
+           'cholesterol_unit': nutrients.get('cholesterol_unit', ''),
+           'sodium': nutrients.get('sodium', 'N/A'),
+           'sodium_unit': nutrients.get('sodium_unit', ''),
+           'carbohydrates': nutrients.get('carbohydrates', 'N/A'),
+           'carbohydrates_unit': nutrients.get('carbohydrates_unit', ''),
+           'sugars': nutrients.get('sugars', 'N/A'),
+           'sugars_unit': nutrients.get('sugars_unit', ''),
+           'proteins': nutrients.get('proteins', 'N/A'),
+           'proteins_unit': nutrients.get('proteins_unit', '')
+       }
+        return product_info
+    else:
+        return "Product not found or does not exist."
 
 
 if __name__ == '__main__':

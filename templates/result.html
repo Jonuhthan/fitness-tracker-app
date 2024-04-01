@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <title>Nutritional Data App</title>
+    </head>
+    <body>
+        <h1>Nutritional Data for {{ barcode }}</h1>
+        {% if status == 1 %}
+            {% for nutrient, amount in product_info.items() %}
+                <ul>{{ nutrient }}: {{ amount }}</ul>
+            {% endfor %}
+        {% endif %}
+        <script type="text/javascript" src="../static/script.js"></script>
+    </body>
+</html>
