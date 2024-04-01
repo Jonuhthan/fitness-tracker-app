@@ -3,7 +3,6 @@ from imutils.video import VideoStream
 from pyzbar import pyzbar
 import cv2
 import threading
-import time
 import requests
 
 app = Flask(__name__)
@@ -84,6 +83,7 @@ def start_feed_route():
 @app.route('/result', methods=['POST'])
 def result():
     global found
+    # Constantly check for barcode
     while not found:
         continue
     if found:
@@ -91,12 +91,14 @@ def result():
         product_info = fetch_product_info(barcode)
         return render_template('result.html', product_info=product_info, barcode=barcode, status=status)
     else:
-        return "No barcode scan"
+        return "No barcode recognized"
 
 def fetch_product_info(barcode):
+    # OpenFoodFacts API
     endpoint = 'https://world.openfoodfacts.org/api/v0/product/'
     url = f'{endpoint}{barcode}.json'   
     response = requests.get(url)
+    # JSON representation of data
     data = response.json()
     
     global status
@@ -105,7 +107,7 @@ def fetch_product_info(barcode):
     if status == 1:
         product = data['product']
         nutrients = product.get('nutriments', {})
-
+        # Key-value pairs of relevant nutritional info (will be edited in the future)
         product_info = {
            'Name': product.get('product_name', 'N/A'),
            'allergens': product.get('allergens_from_ingredients', 'N/A'),
