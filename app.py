@@ -6,7 +6,7 @@ import threading
 import requests
 import time
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='templates', static_folder='static')
 vs = None
 found = []
 lock = threading.Lock()

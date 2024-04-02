@@ -2,21 +2,24 @@
 
 <html lang="en">
     <head>
+        <meta charset="UTF-8">
         <title>Nutritional Data App</title>
+        <link rel="stylesheet" href="../static/style.css">
     </head>
     <body>
         <h1>Nutritional Data for {{ barcode }}</h1>
         <!-- Iterate over each key-value pair in product_info and list them out -->
+        <ul>
         {% if status == 1 %}
             {% for category, value in product_info.items() %}
-                <!-- add if statement to check length of amount as a way to differentiate nutrients with names and stuff -->
                 {% if value|length > 2 %}
-                    <ul>{{ category }}: {{ value }}</ul>   
+                    <li>{{ category }}: {{ value }}</li>   
                 {% else %}
-                    <ul>{{ category }}: {{ value[0] }}{{ value[1] }}</ul>
+                    <li>{{ category }}: {{ value[0] }}{{ value[1] }}</li>
                 {% endif %}
             {% endfor %}
         {% endif %}
+        </ul>
         <a href="{{ url_for('index') }}"><button>Home</button></a>
         <script type="text/javascript" src="../static/script.js"></script>
     </body>
