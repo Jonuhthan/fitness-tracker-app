@@ -61,9 +61,8 @@ def generate():
     vs = None
     cv2.destroyAllWindows()
 
-
 # Home page
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def index():
     return render_template('index.html')
 
@@ -85,14 +84,14 @@ def start_feed_route():
 @app.route('/result', methods=['POST'])
 def result():
     global found
-    # Check for barcode every three seconds
+    # Check for barcode every two seconds
     while True:
         if found:
             break
         time.sleep(2.0)
 
     if found:
-        barcode = found[0]  #'0078742136035'   # Chocolate bar barcode example
+        barcode = found[0]  #'0078742136035', Chocolate bar barcode example
         found = []
         product_info = fetch_product_info(barcode)
         return render_template('result.html', product_info=product_info, barcode=barcode, status=status)
@@ -113,7 +112,6 @@ def fetch_product_info(barcode):
     if status == 1:
         product = data['product']
         nutrients = product.get('nutriments', {})
-        # Key-value pairs of relevant nutritional info (will be edited in the future)
         product_info = {
            'Name': product.get('product_name', 'N/A'),
            'Ingredients': product.get('ingredients_text', 'N/A'),

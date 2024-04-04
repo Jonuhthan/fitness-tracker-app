@@ -6,13 +6,13 @@
         <title>Nothing but Nutrition!</title>
         <link rel="stylesheet" href="../static/style.css">
     </head>
-    <body>
-        <h1>Nothing but Nutrition! 🍎</h1>
+    <body class="bg">
+        <h1><span>Nothing but Nutrition! 🍎</span></h1>
         <!-- Placeholder image -->
         <img src="{{ url_for('static', filename='images/placeholder.jpg') }}" alt="Placeholder image." id="placeholder">
         <!-- Submit form to make API call and swap placeholder with video stream -->
         <form action="/result" method="post">
-            <button onclick="start_video('{{ url_for('video_feed') }}')">Scan barcode</button>
+            <button onclick="start_video('{{ url_for('video_feed') }}')">Get Scanning! 📷</button>
         </form>
         <script type="text/javascript" src="../static/script.js"></script>
     </body>

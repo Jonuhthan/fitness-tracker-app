@@ -6,21 +6,26 @@
         <title>Nutritional Data App</title>
         <link rel="stylesheet" href="../static/style.css">
     </head>
-    <body>
-        <h1>Nutritional Data for {{ barcode }}</h1>
+    <body class="bg">
+        <h1><span>Nutritional Data for {{ product_info['Name'] }}</span></h1>
         <!-- Iterate over each key-value pair in product_info and list them out -->
-        <ul>
-        {% if status == 1 %}
-            {% for category, value in product_info.items() %}
-                {% if value|length > 2 %}
-                    <li>{{ category }}: {{ value }}</li>   
-                {% else %}
-                    <li>{{ category }}: {{ value[0] }}{{ value[1] }}</li>
-                {% endif %}
-            {% endfor %}
-        {% endif %}
-        </ul>
-        <a href="{{ url_for('index') }}"><button>Home</button></a>
+        <div id="macros">
+            <ul>
+            {% if status == 1 %}
+                {% for category, value in product_info.items() %}
+                    {% if value|length > 2 %}
+                        <li>{{ category }}: {{ value }}</li>   
+                    {% else %}
+                        <li>{{ category }}: {{ value[0] }}{{ value[1] }}</li>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+            </ul>
+        </div>
+        <img id="lastFrame" src="" alt="I CANNOT OPEN THIS DAMN">
+        <form action="/" method="POST">
+            <button>Home 🏠</button>
+        </form>
         <script type="text/javascript" src="../static/script.js"></script>
     </body>
 </html>
