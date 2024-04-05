@@ -5,11 +5,14 @@ import cv2
 import threading
 import requests
 import time
+import os
 
 app = Flask(__name__, template_folder='templates', static_folder='static')
 vs = None
 found = []
 lock = threading.Lock()
+images_dir = r"fitness-tracker-app\static\images"
+abs_path = os.path.abspath(images_dir)
 
 def generate():
     global vs
@@ -22,7 +25,7 @@ def generate():
                     
             # Read each frame and make sure it works
             success, frame = vs.read()
-            
+
             if not success:
                 print('Failed to read frame.')
                 break
@@ -43,6 +46,12 @@ def generate():
 
                 # Append first found barcode to global found
                 found.append(barcodeData)
+
+
+            # Stops generating frames when barcode is found, writes lastframe.jpg to images folder
+            if len(found) > 0:
+                cv2.imwrite(os.path.join(abs_path, "lastframe.jpg"), frame)
+                break
             
             _, buffer = cv2.imencode('.jpg', frame)
             # Break the frame down into bytes
@@ -51,11 +60,7 @@ def generate():
             # Display the frame
             yield (b'--frame\r\n'
                 b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
-
-            # Stops generating frames when barcode is found
-            if len(found) > 0:
-                print(f"Barcode scanned: {barcodeData}")
-                break
+            
     # Close video stream
     vs.release()
     vs = None
@@ -84,15 +89,14 @@ def start_feed_route():
 @app.route('/result', methods=['POST'])
 def result():
     global found
-    # Check for barcode every two seconds
     while True:
         if found:
             break
-        time.sleep(2.0)
+        time.sleep(2.0)     # Check for barcode every two seconds
 
     if found:
-        barcode = found[0]  #'0078742136035', Chocolate bar barcode example
-        found = []
+        barcode = found[0]
+        found = []  # Clear for repeated scans on one visit
         product_info = fetch_product_info(barcode)
         return render_template('result.html', product_info=product_info, barcode=barcode, status=status)
     else:
@@ -109,6 +113,7 @@ def fetch_product_info(barcode):
     global status
     status = data['status']
 
+    # Different macronutrients and other relevant information to be displayed
     if status == 1:
         product = data['product']
         nutrients = product.get('nutriments', {})

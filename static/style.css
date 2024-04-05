@@ -21,8 +21,9 @@ h1 span {
     padding: 5px;
 }
 
-div {
-    float: left;
+.container {
+    display: flex;
+    align-items: flex-start;
 }
 
 button {
@@ -45,6 +46,18 @@ button {
 
 }
 
+#lastFrame {
+    height: 450px;
+    width: 600px;
+    margin: 20px
+}
+
+.homeButton {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+}
+
 ul {
     list-style-type: none;
     background-color: green;
@@ -56,9 +69,7 @@ li {
     font-size: large;
     font-family: sans-serif;
     color: white;
-    margin-left: 30px;
-    margin-top: 10px;
-    margin-bottom: 10px;
+    padding: 10px;
     animation: fadeIn 0.5s forwards;
 }
 

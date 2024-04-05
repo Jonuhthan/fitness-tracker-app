@@ -5,14 +5,15 @@
         <meta charset="UTF-8">
         <title>Nutritional Data App</title>
         <link rel="stylesheet" href="../static/style.css">
-    </head>
+    </head> 
     <body class="bg">
         <h1><span>Nutritional Data for {{ product_info['Name'] }}</span></h1>
         <!-- Iterate over each key-value pair in product_info and list them out -->
-        <div id="macros">
+        <div class="container">
             <ul>
             {% if status == 1 %}
                 {% for category, value in product_info.items() %}
+                    <!-- Differentiates "Name" and "Ingredients" from other pairs -->
                     {% if value|length > 2 %}
                         <li>{{ category }}: {{ value }}</li>   
                     {% else %}
@@ -21,11 +22,12 @@
                 {% endfor %}
             {% endif %}
             </ul>
+            <!-- Last frame from video stream displayed alongside nutritional information -->
+            <img id="lastFrame" src="{{ url_for('static', filename='images/lastframe.jpg') }}" alt="Failed to load image.">
+            <form action="/" method="POST">
+                <button class="homeButton">Home 🏠</button>
+            </form>
         </div>
-        <img id="lastFrame" src="" alt="I CANNOT OPEN THIS DAMN">
-        <form action="/" method="POST">
-            <button>Home 🏠</button>
-        </form>
         <script type="text/javascript" src="../static/script.js"></script>
     </body>
 </html>
