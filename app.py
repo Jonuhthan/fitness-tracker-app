@@ -1,4 +1,4 @@
-from flask import Flask, render_template, Response
+from flask import Flask, render_template, Response, request, url_for, redirect
 from imutils.video import VideoStream
 from pyzbar import pyzbar
 import cv2
@@ -49,7 +49,7 @@ def generate():
 
 
             # Stops generating frames when barcode is found, writes lastframe.jpg to images folder
-            if len(found) > 0:
+            if found:
                 cv2.imwrite(os.path.join(abs_path, "lastframe.jpg"), frame)
                 break
             
@@ -86,7 +86,18 @@ def start_feed_route():
     start_feed()
     return "Starting video feed"
 
-@app.route('/result', methods=['POST'])
+@app.route('/manual', methods=['POST'])
+def man_entry():
+    global vs
+    barcode = request.form['barcodeField']
+    found.append(barcode)
+    if os.path.exists(f"{abs_path}/lastframe.jpg"):
+        os.remove(f"{abs_path}/lastframe.jpg")
+    if not vs is None:
+        vs.release()
+    return redirect('/result')
+
+@app.route('/result', methods=['GET', 'POST'])
 def result():
     global found
     while True:

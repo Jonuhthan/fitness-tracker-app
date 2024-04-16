@@ -11,9 +11,21 @@
         <!-- Placeholder image -->
         <img src="{{ url_for('static', filename='images/placeholder.jpg') }}" alt="Placeholder image." id="placeholder">
         <!-- Submit form to make API call and swap placeholder with video stream -->
-        <form action="/result" method="post">
-            <button onclick="start_video('{{ url_for('video_feed') }}')">Get Scanning! 📷</button>
-        </form>
+
+        <div class="buttonsContainer">
+            <form action="/result" method="POST">
+                <button id="scanButton" onclick="start_video('{{ url_for('video_feed') }}')">Get Scanning! 📷</button>
+                <button id="manButton" type="button">Enter Barcode Manually 🔎</button>
+            </form>
+        </div>
+
+        <div id="barFieldCont">
+            <form action="/manual" method="POST">
+                <input class="barcodeField" type="number" id="barcodeField" name="barcodeField" placeholder="Enter Barcode...">
+                <button class="barFieldSub">Submit</button>
+            </form>
+        </div>
+        
         <script type="text/javascript" src="../static/script.js"></script>
     </body>
 </html>

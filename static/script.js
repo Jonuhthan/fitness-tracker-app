@@ -8,3 +8,17 @@ async function start_video(url) {
         document.getElementById("placeholder").src = url;
     }
 };
+
+const scanButton = document.getElementById("scanButton");
+const manButton = document.getElementById("manButton");
+const barFieldCont = document.getElementById("barFieldCont");
+
+scanButton.addEventListener("click", () => {
+    setTimeout(() => {
+        manButton.style.display = 'inline-block';
+    }, 7500);
+});
+
+manButton.addEventListener("click", () => {
+    barFieldCont.style.display = 'block';
+});

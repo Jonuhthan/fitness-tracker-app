@@ -23,9 +23,9 @@
             {% endif %}
             </ul>
             <!-- Last frame from video stream displayed alongside nutritional information -->
-            <img id="lastFrame" src="{{ url_for('static', filename='images/lastframe.jpg') }}" alt="Failed to load image.">
+            <img id="lastFrame" src="{{ url_for('static', filename='images/lastframe.jpg') }}" alt="Unable to load image.">
             <form action="/" method="POST">
-                <button class="homeButton">Home 🏠</button>
+                <button id="homeButton">Home 🏠</button>
             </form>
         </div>
         <script type="text/javascript" src="../static/script.js"></script>
