@@ -10,7 +10,7 @@ app = Flask(__name__, template_folder='templates', static_folder='static')
 vs = None
 found = []
 lock = threading.Lock()
-images_dir = r"fitness-tracker-app\static\images"
+images_dir = r"nutritional-tracker-app\static\images"
 abs_path = os.path.abspath(images_dir)
 
 
