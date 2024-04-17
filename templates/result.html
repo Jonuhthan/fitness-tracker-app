@@ -7,27 +7,34 @@
         <link rel="stylesheet" href="../static/style.css">
     </head> 
     <body class="bg">
-        <h1><span>Nutritional Data for {{ product_info['Name'] }}</span></h1>
-        <!-- Iterate over each key-value pair in product_info and list them out -->
-        <div class="container">
-            <ul>
-            {% if status == 1 %}
-                {% for category, value in product_info.items() %}
-                    <!-- Differentiates "Name" and "Ingredients" from other pairs -->
-                    {% if value|length > 2 %}
-                        <li>{{ category }}: {{ value }}</li>   
-                    {% else %}
-                        <li>{{ category }}: {{ value[0] }}{{ value[1] }}</li>
-                    {% endif %}
-                {% endfor %}
-            {% endif %}
-            </ul>
-            <!-- Last frame from video stream displayed alongside nutritional information -->
-            <img id="lastFrame" src="{{ url_for('static', filename='images/lastframe.jpg') }}" alt="Unable to load image.">
-            <form action="/" method="POST">
-                <button id="homeButton">Home 🏠</button>
-            </form>
-        </div>
+        {% if status == 1 %}
+            <h1><span>Nutritional Data for {{ product_info['Name'] }}</span></h1>
+            <!-- Iterate over each key-value pair in product_info and list them out -->
+            <div class="container">
+                <ul>
+                    {% for category, value in product_info.items() %}
+                        <!-- Differentiates "Name" and "Ingredients" from other pairs -->
+                        {% if value|length > 2 %}
+                            <li>{{ category }}: {{ value }}</li>   
+                        {% else %}
+                            <li>{{ category }}: {{ value[0] }}{{ value[1] }}</li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+
+                <!-- Last frame from video stream displayed alongside nutritional information -->
+                <img id="lastFrame" src="{{ url_for('static', filename='images/lastframe.jpg') }}" alt="Unable to load image.">
+            </div>
+        <!-- Handles unknown queries -->
+        {% else %}
+            <h1><span>Nutritional Data for Unknown</span></h1>
+            <p class="unknown">Barcode was not recognized. Please try again.</p>
+        {% endif %}
+
+        <form action="/" method="POST">
+            <button id="homeButton">Home 🏠</button>
+        </form>
+
         <script type="text/javascript" src="../static/script.js"></script>
     </body>
 </html>

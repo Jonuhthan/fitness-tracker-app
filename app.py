@@ -1,5 +1,4 @@
-from flask import Flask, render_template, Response, request, url_for, redirect
-from imutils.video import VideoStream
+from flask import Flask, render_template, Response, request, redirect
 from pyzbar import pyzbar
 import cv2
 import threading
@@ -13,6 +12,7 @@ found = []
 lock = threading.Lock()
 images_dir = r"fitness-tracker-app\static\images"
 abs_path = os.path.abspath(images_dir)
+
 
 def generate():
     global vs
@@ -66,36 +66,45 @@ def generate():
     vs = None
     cv2.destroyAllWindows()
 
+
 # Home page
 @app.route('/', methods=['GET', 'POST'])
 def index():
     return render_template('index.html')
+
 
 # Calls generate() to display jpg frames on HTML page
 @app.route('/video_feed')
 def video_feed():
     return Response(generate(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
-def start_feed():
+
+# Initiates feed
+@app.route('/start_feed', methods=['POST'])
+def start_feed_route():
     global vs
     if vs is None:  # Prevents Video from breaking after repeated presses
         vs = cv2.VideoCapture(cv2.CAP_DSHOW)
-
-@app.route('/start_feed', methods=['POST'])
-def start_feed_route():
-    start_feed()
     return "Starting video feed"
+
 
 @app.route('/manual', methods=['POST'])
 def man_entry():
     global vs
     barcode = request.form['barcodeField']
+
+    # Update found with manually entered barcode
     found.append(barcode)
+
+    # Prevents result.html from displaying last scanned image
     if os.path.exists(f"{abs_path}/lastframe.jpg"):
         os.remove(f"{abs_path}/lastframe.jpg")
     if not vs is None:
         vs.release()
+
+    # Redirect user to result of barcode scan
     return redirect('/result')
+
 
 @app.route('/result', methods=['GET', 'POST'])
 def result():
@@ -111,7 +120,8 @@ def result():
         product_info = fetch_product_info(barcode)
         return render_template('result.html', product_info=product_info, barcode=barcode, status=status)
     else:
-        return "No barcode recognized"
+        return render_template('result.html', status=status)
+
 
 def fetch_product_info(barcode):
     # OpenFoodFacts API

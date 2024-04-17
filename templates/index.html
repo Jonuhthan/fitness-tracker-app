@@ -10,9 +10,9 @@
         <h1><span>Nothing but Nutrition! 🍎</span></h1>
         <!-- Placeholder image -->
         <img src="{{ url_for('static', filename='images/placeholder.jpg') }}" alt="Placeholder image." id="placeholder">
-        <!-- Submit form to make API call and swap placeholder with video stream -->
 
         <div class="buttonsContainer">
+            <!-- Submit form to make API call and swap placeholder with video stream -->
             <form action="/result" method="POST">
                 <button id="scanButton" onclick="start_video('{{ url_for('video_feed') }}')">Get Scanning! 📷</button>
                 <button id="manButton" type="button">Enter Barcode Manually 🔎</button>
@@ -20,6 +20,7 @@
         </div>
 
         <div id="barFieldCont">
+            <!-- Submit form to manual route with barcode entered in field -->
             <form action="/manual" method="POST">
                 <input class="barcodeField" type="number" id="barcodeField" name="barcodeField" placeholder="Enter Barcode...">
                 <button class="barFieldSub">Submit</button>

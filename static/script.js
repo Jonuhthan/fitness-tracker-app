@@ -13,12 +13,14 @@ const scanButton = document.getElementById("scanButton");
 const manButton = document.getElementById("manButton");
 const barFieldCont = document.getElementById("barFieldCont");
 
+// Makes option to manually enter barcode visible
 scanButton.addEventListener("click", () => {
     setTimeout(() => {
         manButton.style.display = 'inline-block';
     }, 7500);
 });
 
+// Barcode entry field made visible
 manButton.addEventListener("click", () => {
     barFieldCont.style.display = 'block';
 });

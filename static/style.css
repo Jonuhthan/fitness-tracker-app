@@ -98,6 +98,14 @@ li {
     animation: fadeIn 0.5s forwards;
 }
 
+.unknown { 
+    background-color: green;
+    font-size: large;
+    font-family: sans-serif;
+    color: white;
+    padding: 10px;
+}
+
 @keyframes fadeIn {
     from {
         opacity: 0;
