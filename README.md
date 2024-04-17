@@ -1,3 +1,17 @@
-# fitness-tracker-app
+# Nothing but Nutrition! 🍎
 
-This app allows individuals to use their device's camera to scan food barcodes and retrieve relevant nutritonal data from the Open Food Facts API. This data can then be viewed by the user and added to help reach nutritional/dietary goals.
+Gain valuable nutritional insight on everyday foods with a quick scan. This application allows individuals to use their device's camera to scan UPC barcodes and retrieve relevant nutritonal data from the Open Food Facts API. Equipped with this knowledge, users can further their health goals and live a more nuanced, informed lifestyle. 
+
+## Dependencies
+```
+pip install Flask
+```
+```
+pip install pyzbar
+```
+```
+pip install opencv-python
+```
+```
+pip install requests
+```
