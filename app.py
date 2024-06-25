@@ -10,9 +10,8 @@ app = Flask(__name__, template_folder='templates', static_folder='static')
 vs = None
 found = []
 lock = threading.Lock()
-images_dir = r"nutritional-tracker-app\static\images"
+images_dir = r'static\images'
 abs_path = os.path.abspath(images_dir)
-
 
 def generate():
     global vs
@@ -50,7 +49,9 @@ def generate():
 
             # Stops generating frames when barcode is found, writes lastframe.jpg to images folder
             if found:
-                cv2.imwrite(os.path.join(abs_path, "lastframe.jpg"), frame)
+                # cv2.imwrite(os.path.join(abs_path, "lastFrame.jpg"), frame)
+                if not cv2.imwrite(os.path.join(abs_path, "last_frame.jpg"), frame):
+                    raise Exception("Could not write image.")
                 break
             
             _, buffer = cv2.imencode('.jpg', frame)
@@ -97,8 +98,8 @@ def man_entry():
     found.append(barcode)
 
     # Prevents result.html from displaying last scanned image
-    if os.path.exists(f"{abs_path}/lastframe.jpg"):
-        os.remove(f"{abs_path}/lastframe.jpg")
+    if os.path.exists(f"{abs_path}/last_frame.jpg"):
+        os.remove(f"{abs_path}/last_frame.jpg")
     if not vs is None:
         vs.release()
 
